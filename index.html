@@ -1,0 +1,81 @@
+<html>
+<!-- This is in safe state -->
+
+<head>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Amaranth&family=Roboto+Slab:wght@200&family=Teko:wght@700&display=swap');
+    </style>
+</head>
+
+<body style="background-color:  #900 ; font-family: Teko;" onload="retrieve()">
+
+    <div>
+        <p style="text-align: right; font-family: Teko; font-size: larger;" id="count">Count: </p>
+        <p style="text-align: right; font-family: Teko; font-size: larger;" id="passes">Passes: </p>
+    </div>
+    <form name="myForm" onsubmit="add()" method="post">
+
+        <div style="top: 50%; left: 50%; transform: translate(-50%,-50%); position: absolute; color: white; ">
+            Enter points: <input type="text" name="text" id="text">
+            <input type="button" value="Add" onclick="add()" style="font-family: Teko">
+        </div>
+        <div style="top: 60%; left: 50%; transform: translate(-50%,-50%); position: absolute; color: white;">
+            <input type="button" value="Redeem" onclick="redeem()" style="font-family: Teko">
+        </div>
+    </form>
+
+    <script>
+        var points = document.getElementById('text');
+        var count = document.getElementById('count');
+        var passes = document.getElementById('passes');
+        var pointsCount = 0;
+        var bank = 0;
+        var passCount = 0;
+        var cookies = document.cookie
+            .split(';')
+            .map(cookie => cookie.split('='))
+            .reduce((accumulator, [key, value]) =>
+                ({ ...accumulator, [key.trim()]: decodeURIComponent(value) }),
+                {});
+
+        function retrieve() {
+            bank = parseInt(cookies["points"]);
+            passCount = parseInt(cookies["passCount"]);
+            count.innerHTML = "Count: " + bank;
+            passes.innerHTML = "Passes: " + passCount;
+        }
+
+        function add() {
+            if (points.value != "") {
+                var sure = confirm("Do you really want to add '" + points.value + "' to the bank?")
+                if (sure) {
+                    pointsCount = parseInt(points.value);
+                    alert(passCount);
+                    bank = pointsCount + bank;
+                    alert(bank);
+                    if (Number.isNaN(bank))
+                        bank = parseInt(points.value);
+                    document.cookie = "points=" + bank + ";expires=" + new Date(2147483647 * 1000) + ";";
+                    retrieve();
+                }
+            }
+        }
+
+        function redeem() {
+            if (bank >= 24) {
+                bank = bank - 24;
+                document.cookie = "points=" + bank + ";expires=" + new Date(2147483647 * 1000) + ";";
+                passCount++;
+                document.cookie = "passCount=" + passCount + ";expires=" + new Date(2147483647 * 1000) + ";";
+                alert(passCount);
+                retrieve();
+
+            }
+            else {
+                alert("You do not have enough points!")
+            }
+        }
+    </script>
+</body>
+
+</html>
