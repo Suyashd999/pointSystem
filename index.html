@@ -22,6 +22,9 @@
         <div style="top: 60%; left: 50%; transform: translate(-50%,-50%); position: absolute; color: white;">
             <input type="button" value="Redeem" onclick="redeem()" style="font-family: Teko">
         </div>
+        <div style="top: 70%; left: 50%; transform: translate(-50%,-50%); position: absolute; color: white;">
+            <input type="button" value="Claim" onclick="claimPoints()" style="font-family: Teko">
+        </div>
     </form>
 
     <script>
@@ -62,7 +65,7 @@
                         bank = parseInt(points.value);
                     document.cookie = "points=" + bank + ";expires=" + new Date(2147483647 * 1000) + ";";
                     retrieve();
-                    
+                    location.reload();
                 }
             }
         }
@@ -74,19 +77,25 @@
                 passCount++;
                 document.cookie = "passCount=" + passCount + ";expires=" + new Date(2147483647 * 1000) + ";";
                 retrieve();
-                
+                location.reload();
 
             }
             else {
                 alert("You do not have enough points!")
             }
         }
-        
-         function claimPoints(){
-            passCount--;
-            document.cookie = "passCount=" + passCount + ";expires=" + new Date(2147483647 * 1000) + ";";
-            retrieve();
-            alert("enjoy");
+
+        function claimPoints() {
+            var sure = confirm("Do you really wanna claim and deduct passes by 1?");
+            if (sure && passCount) {
+                passCount--;
+                document.cookie = "passCount=" + passCount + ";expires=" + new Date(2147483647 * 1000) + ";";
+                retrieve();
+                alert("enjoy");
+            }
+            if(passCount==0){
+                alert("study man, and earn the pass..");
+            }
         }
     </script>
 </body>
