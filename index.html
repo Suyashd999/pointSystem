@@ -2,6 +2,7 @@
 <!-- This is in safe state -->
 
 <head>
+    <link rel="shortcut icon" type="image/x-icon" href="media/quench_favicon.png" />
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Amaranth&family=Roboto+Slab:wght@200&family=Teko:wght@700&display=swap');
     </style>
@@ -13,7 +14,7 @@
         <p style="text-align: right; font-family: Teko; font-size: larger;" id="count">Count: </p>
         <p style="text-align: right; font-family: Teko; font-size: larger;" id="passes">Passes: </p>
     </div>
-    <form name="myForm" onsubmit="add()" method="post">
+    <form name="myForm"  id="myForm" onsubmit="add()" method="post">
 
         <div style="top: 50%; left: 50%; transform: translate(-50%,-50%); position: absolute; color: white; ">
             Enter points: <input type="text" name="text" id="text">
@@ -34,14 +35,15 @@
         var pointsCount = 0;
         var bank = 0;
         var passCount = 0;
-        var cookies = document.cookie
+        var cookies;
+
+        function retrieve() {
+            cookies = document.cookie
             .split(';')
             .map(cookie => cookie.split('='))
             .reduce((accumulator, [key, value]) =>
                 ({ ...accumulator, [key.trim()]: decodeURIComponent(value) }),
                 {});
-
-        function retrieve() {
             bank = cookies["points"];
             passCount = cookies["passCount"];
             if (bank == null)
@@ -52,7 +54,7 @@
             passCount = parseInt(passCount);
             count.innerHTML = "Count: " + bank;
             passes.innerHTML = "Passes: " + passCount;
-
+            document.forms.myForm.reset();
         }
 
         function add() {
@@ -65,20 +67,19 @@
                         bank = parseInt(points.value);
                     document.cookie = "points=" + bank + ";expires=" + new Date(2147483647 * 1000) + ";";
                     retrieve();
-                    location.reload();
+                    
                 }
             }
         }
 
         function redeem() {
+            
             if (bank >= 24) {
                 bank = bank - 24;
                 document.cookie = "points=" + bank + ";expires=" + new Date(2147483647 * 1000) + ";";
                 passCount++;
                 document.cookie = "passCount=" + passCount + ";expires=" + new Date(2147483647 * 1000) + ";";
                 retrieve();
-                location.reload();
-
             }
             else {
                 alert("You do not have enough points!")
@@ -87,13 +88,13 @@
 
         function claimPoints() {
             var sure = confirm("Do you really wanna claim and deduct passes by 1?");
-            if (sure && passCount) {
+            if (sure && passCount!=0) {
                 passCount--;
                 document.cookie = "passCount=" + passCount + ";expires=" + new Date(2147483647 * 1000) + ";";
                 retrieve();
-                alert("enjoy");
+                alert("quench the thirst..");
             }
-            if(passCount==0){
+            else if(passCount==0){
                 alert("study man, and earn the pass..");
             }
         }
