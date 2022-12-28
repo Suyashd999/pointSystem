@@ -81,6 +81,13 @@
                 alert("You do not have enough points!")
             }
         }
+        
+         function claimPoints(){
+            passCount--;
+            document.cookie = "passCount=" + passCount + ";expires=" + new Date(2147483647 * 1000) + ";";
+            retrieve();
+            alert("enjoy");
+        }
     </script>
 </body>
 
