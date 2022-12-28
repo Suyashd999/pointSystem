@@ -39,10 +39,17 @@
                 {});
 
         function retrieve() {
-            bank = parseInt(cookies["points"]);
-            passCount = parseInt(cookies["passCount"]);
+            bank = cookies["points"];
+            passCount = cookies["passCount"];
+            if (bank == null)
+                document.cookie = "points=0;expires=" + new Date(2147483647 * 1000) + ";";
+            if (passCount == null)
+                document.cookie = "passCount=0;expires=" + new Date(2147483647 * 1000) + ";";
+            bank = parseInt(bank);
+            passCount = parseInt(passCount);
             count.innerHTML = "Count: " + bank;
             passes.innerHTML = "Passes: " + passCount;
+
         }
 
         function add() {
@@ -50,9 +57,7 @@
                 var sure = confirm("Do you really want to add '" + points.value + "' to the bank?")
                 if (sure) {
                     pointsCount = parseInt(points.value);
-                    alert(passCount);
                     bank = pointsCount + bank;
-                    alert(bank);
                     if (Number.isNaN(bank))
                         bank = parseInt(points.value);
                     document.cookie = "points=" + bank + ";expires=" + new Date(2147483647 * 1000) + ";";
