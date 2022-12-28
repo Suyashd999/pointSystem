@@ -62,7 +62,7 @@
                         bank = parseInt(points.value);
                     document.cookie = "points=" + bank + ";expires=" + new Date(2147483647 * 1000) + ";";
                     retrieve();
-                    location.reload();
+                    
                 }
             }
         }
@@ -74,7 +74,7 @@
                 passCount++;
                 document.cookie = "passCount=" + passCount + ";expires=" + new Date(2147483647 * 1000) + ";";
                 retrieve();
-                location.reload();
+                
 
             }
             else {
