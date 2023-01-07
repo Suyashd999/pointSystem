@@ -74,15 +74,15 @@
 
         function redeem() {
             
-            if (bank >= 24) {
-                bank = bank - 24;
+            if (bank >= 12) {
+                bank = bank - 12;
                 document.cookie = "points=" + bank + ";expires=" + new Date(2147483647 * 1000) + ";";
                 passCount++;
                 document.cookie = "passCount=" + passCount + ";expires=" + new Date(2147483647 * 1000) + ";";
                 retrieve();
             }
             else {
-                alert("You do not have enough points!")
+                alert("You need " + (12-bank) + " more points!");
             }
         }
 
